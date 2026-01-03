@@ -1,0 +1,37 @@
+name: 每日股市分析機器人
+
+# 設定觸發時間
+on:
+  schedule:
+    # 這裡設定 UTC 時間 07:00 (即台灣時間 15:00 收盤後)
+    # 格式為: 分 時 日 月 週 (1-5 代表週一到週五)
+    - cron: '0 7 * * 1-5'
+  # 允許手動按按鈕觸發測試
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 使用最新的 Linux 環境
+
+    steps:
+    # 1. 下載您的程式碼
+    - name: 下載程式碼 (Checkout)
+      uses: actions/checkout@v3
+
+    # 2. 設定 Python 環境
+    - name: 設定 Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    # 3. 安裝必要的工具包 (twstock)
+    - name: 安裝分析工具
+      run: |
+        pip install twstock lxml requests
+
+    # 4. 執行我們剛剛寫的 main.py
+    - name: 執行分析
+      run: python main.py
+4. 點擊 Commit changes 保存檔案。
+
+--------------------------------------------------------------------------------
